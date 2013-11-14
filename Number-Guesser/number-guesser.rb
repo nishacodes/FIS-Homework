@@ -9,9 +9,15 @@
 # are right or wrong.
 
 class Game
-def numberguesser(number)
-puts "Pick a number between 1 and 100"
-guess=gets.chomp.to_i
-guess == number
+	def numberguesser(number)
+	puts "Pick a number between 1 and 100"
+	guess=gets.chomp.to_i
+	puts guess == number ? "That's amazing, you got it!" : "Nope, try again."
+		# Remove repetition
+		while guess != number do 
+			guess=gets.chomp.to_i
+			puts guess == number ? "That's amazing, you got it!" : "Nope, try again."
+		end
+	end
 end
-end
+
