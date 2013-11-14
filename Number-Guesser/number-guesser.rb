@@ -9,11 +9,8 @@
 # are right or wrong.
 
 class Game
-	def numberguesser(number)
-	puts "Pick a number between 1 and 100"
-	guess=gets.chomp.to_i
-	puts guess == number ? "That's amazing, you got it!" : "Nope, try again."
-		# Remove repetition
+	def numberguesser(number, guess=0)
+		puts "Pick a number between 1 and 100"
 		while guess != number do 
 			guess=gets.chomp.to_i
 			puts guess == number ? "That's amazing, you got it!" : "Nope, try again."
@@ -21,3 +18,4 @@ class Game
 	end
 end
 
+Game.new.numberguesser(27)
