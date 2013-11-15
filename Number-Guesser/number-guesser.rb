@@ -37,7 +37,7 @@ class Game
 				"You got it! It only took you #{@count} tries. Want to play again? (Y / N)" : "Nope, try again." 
 			higherlower
 			@diff = (@number - @guess).abs
-			warmercolder if @count > 1
+			warmercolder if @count > 1 && @guess != @number
 			@count += 1
 			end
 		end
