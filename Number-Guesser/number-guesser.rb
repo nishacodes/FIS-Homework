@@ -24,9 +24,13 @@ class Game
 		@number = rand(1..100)
 		while @guess != @number do 
 			@guess = gets.chomp.to_i
+			unless @guess.between?(1,100) # validation the guess is number btw 1..100
+				puts "That's not a valid guess!" 
+			else
 			puts @guess == @number ? 
 				"You got it! Want to play again? (Y / N)" : "Nope, try again." 
 			higherlower
+			end
 		end
 		playagain = gets.chomp.downcase
 		playagain == "y" ? numberguesser : "Bummer. Have a nice day."
