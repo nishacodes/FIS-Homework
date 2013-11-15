@@ -16,6 +16,7 @@ class Game
 	def initialize
 		@guess = 0
 		@number = rand(1..100)
+		@count = 1
 	end
 
 	def numberguesser
@@ -28,8 +29,9 @@ class Game
 				puts "That's not a valid guess!" 
 			else
 			puts @guess == @number ? 
-				"You got it! Want to play again? (Y / N)" : "Nope, try again." 
+				"You got it! It only took you #{@count} tries. Want to play again? (Y / N)" : "Nope, try again." 
 			higherlower
+			@count += 1
 			end
 		end
 		playagain = gets.chomp.downcase
@@ -43,6 +45,10 @@ class Game
 			when @guess < @number
 			puts "(Hint: You guessed too low)"
 		end
+	end
+
+	def warmercolder
+
 	end
 end
 
