@@ -17,20 +17,27 @@ class Game
 		@guess = 0
 		@number = rand(1..100)
 		@count = 1
+		@diff = 0
+		@lastdiff = 0
 	end
 
 	def numberguesser
-		puts "I'm thinking of a number between 1 and 100. Try and guess it."
-		@guess = 0
+		@lastdiff = ((@number - @guess).abs)if @guess != 0
 		@number = rand(1..100)
+		puts "I'm thinking of a number between 1 and 100. Try and guess it."
 		while @guess != @number do 
+			# before a new guess is made, see the diff of last guess
+			@lastdiff = ((@number - @guess).abs)if @guess != 0  
 			@guess = gets.chomp.to_i
-			unless @guess.between?(1,100) # validation the guess is number btw 1..100
+			# validation the guess is number btw 1..100
+			unless @guess.between?(1,100) 
 				puts "That's not a valid guess!" 
 			else
 			puts @guess == @number ? 
 				"You got it! It only took you #{@count} tries. Want to play again? (Y / N)" : "Nope, try again." 
 			higherlower
+			@diff = (@number - @guess).abs
+			warmercolder if @count > 1
 			@count += 1
 			end
 		end
@@ -41,14 +48,18 @@ class Game
 	def higherlower
 		case 
 			when @guess > @number
-				puts "(Hint: You guessed too high)"
+				puts "(Hint #1: You guessed too high)"
 			when @guess < @number
-			puts "(Hint: You guessed too low)"
+			puts "(Hint #1: You guessed too low)"
 		end
 	end
 
 	def warmercolder
-
+		if @diff > @lastdiff 
+			puts "(Hint #2: You are getting colder)"
+		else
+			puts "(Hint #2: You are getting warmer)"
+		end
 	end
 end
 
