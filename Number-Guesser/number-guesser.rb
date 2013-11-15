@@ -12,9 +12,11 @@ class Game
 	def numberguesser(number, guess=0)
 		puts "Pick a number between 1 and 100"
 		while guess != number do 
-			guess=gets.chomp.to_i
-			puts guess == number ? "That's amazing, you got it!" : "Nope, try again."
+			guess = gets.chomp.to_i
+			puts guess == number ? "That's amazing, you got it! Want to play again? (Y / N)" : "Nope, try again." 
 		end
+		playagain = gets.chomp.downcase
+		playagain == "y" ? numberguesser(rand(1..100)) : "Bummer. Have a nice day."
 	end
 end
 
