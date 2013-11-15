@@ -3,21 +3,45 @@
 # Should ask the user to enter a number between 1 and 100
 # Should receive input from the user
 # Should tell the user if they were correct or incorrect
+# Should tell the user if their guess  are 'higher' or 'lower' than the correct number
+# Should tell the user if they are getter warmer or colder
+# Should make it so that the secret number is random
 
 # CHALLENGE:
 # Write a test to check that your file correctly tells the user if they 
 # are right or wrong.
 
 class Game
-	def numberguesser(number, guess=0)
-		puts "Pick a number between 1 and 100"
-		while guess != number do 
-			guess = gets.chomp.to_i
-			puts guess == number ? "That's amazing, you got it! Want to play again? (Y / N)" : "Nope, try again." 
+	
+	def initialize
+		@guess = 0
+		@number = rand(1..100)
+	end
+
+	def numberguesser
+		puts "I'm thinking of a number between 1 and 100. Try and guess it."
+		@guess = 0
+		@number = rand(1..100)
+		while @guess != @number do 
+			@guess = gets.chomp.to_i
+			puts @guess == @number ? 
+				"You got it! Want to play again? (Y / N)" : "Nope, try again." 
+			higherlower
 		end
 		playagain = gets.chomp.downcase
-		playagain == "y" ? numberguesser(rand(1..100)) : "Bummer. Have a nice day."
+		playagain == "y" ? numberguesser : "Bummer. Have a nice day."
+	end
+
+	def higherlower
+		case 
+			when @guess > @number
+				puts "(Hint: You guessed too high)"
+			when @guess < @number
+			puts "(Hint: You guessed too low)"
+		end
 	end
 end
 
-Game.new.numberguesser(27)
+Game.new.numberguesser
+
+
