@@ -75,37 +75,64 @@ class GroceryShopping
 		end
 	end
 
-	def coupdiscounts
-
-
+	def addCost
+		@new_cart.each do |item, details|
+			details[:cost] = (details[:price] * details[:count])
+		end
 	end
 
-	def checkout
-		@totalcost = 0.0
-		# adds cost for each item less the clearance discount
+	def addCoupstoItem
 		@new_cart.each do |item, details|
-			if details[:clearance]==true
-				@totalcost += (details[:price] * details[:count] * 0.8)
-			else
-				@totalcost += (details[:price] * details[:count])
+			details[:coups] ||=0
+			@coups.each do |couponhash|
+				if couponhash[:item]== item
+					details[:coups] += 1
+				end
 			end
 		end
+		@new_cart
+			
+	end
 
+	def coupdiscounts
+		@new_cart.each do |item, details|
+			case
+				when item == "CHEESE" && details[:coups] == 1 && details[:count] > 2
+					details[:cost] = ((details[:count] / 3) * 15 + (details[:count] % 3) * details[:price])
+				when item == "AVOCADO" && details[:coups] == 1 && details[:count] > 1
+						details[:cost] = ((details[:count] / 2) * 5) + ((details[:count] % 2) * details[:price])
+				when item == "BEER" && details[:coups] == 1 && details[:count] > 1
+						details[:cost] = ((details[:count] / 2) * 10) + ((details[:count] % 2) * details[:price])
+			end				
+		end
+	end		
+
+	def 
+
+end
+
+		# adds cost for each item less the clearance discount
+		# @new_cart.each do |item, details|
+		# 	if details[:clearance]==true
+		# 		@totalcost += (details[:price] * details[:count] * 0.8)
+		# 	else
+		# 		@totalcost += (details[:price] * details[:count])
+		# 	end
+		# end
 		# adds coupon discounts
 		# @new_cart.each do |item, details|
 		# 	if item == "AVOCADO" && if details[:count] >= 2
 		# 		@totalcost -= 1 * (details[:count] / 2)
 		# 	end
 		# end
+	# end
 
-		puts @totalcost
-	end
 
-end
 
 nisha = GroceryShopping.new
 
-nisha.checkout
+nisha.addCost
+nisha.addCoupstoItem
 puts nisha.new_cart
 
 
