@@ -27,7 +27,7 @@ class GroceryShopping
 		@coups = generateCoups
 		@new_cart = reorganizeCart
 		@totaldiscount
-		@totalcost = 0
+		@totalcost = 0.00
 	end
 
 	#randomly generates a cart of items
@@ -94,20 +94,30 @@ class GroceryShopping
 			
 	end
 
-	def coupdiscounts
+	# INCORPORATE: if the customer has 2 of the same coupon, triple the discount 
+	def coupDiscounts
 		@new_cart.each do |item, details|
 			case
 				when item == "CHEESE" && details[:coups] == 1 && details[:count] > 2
-					details[:cost] = ((details[:count] / 3) * 15 + (details[:count] % 3) * details[:price])
+					details[:cost] = (((details[:count] / 3) * 15) + ((details[:count] % 3) * details[:price]))
 				when item == "AVOCADO" && details[:coups] == 1 && details[:count] > 1
-						details[:cost] = ((details[:count] / 2) * 5) + ((details[:count] % 2) * details[:price])
+						details[:cost] = (((details[:count] / 2) * 5) + ((details[:count] % 2) * details[:price]))
 				when item == "BEER" && details[:coups] == 1 && details[:count] > 1
-						details[:cost] = ((details[:count] / 2) * 10) + ((details[:count] % 2) * details[:price])
-			end				
+						details[:cost] = (((details[:count] / 2) * 20) + ((details[:count] % 2) * details[:price]))
+				end				
 		end
 	end		
-
-	def 
+	
+	# INCORPORATE: if none of the items purchased have a unit price greater than 5$ give the customer a 10$ discount off the whole cart
+	def checkout
+		@new_cart.each do |item, details|
+			if details[:clearance]==true
+				@totalcost += (details[:cost] * 0.8)
+			else
+				@totalcost += (details[:cost])
+			end
+		@totalcost
+	end
 
 end
 
@@ -130,9 +140,10 @@ end
 
 
 nisha = GroceryShopping.new
-
 nisha.addCost
 nisha.addCoupstoItem
+nisha.coupDiscounts
+nisha.checkout
 puts nisha.new_cart
 
 
