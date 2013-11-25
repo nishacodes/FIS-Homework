@@ -5,8 +5,8 @@
 # Code generates a random cart of items and a random set of coupons. 
 # Implement a method checkout to calculate total cost of a cart of items 
 # and apply discounts and coupons as necessary.
-class GroceryShopping
-	attr_accessor :cart, :new_cart, :coups, :totalcost
+class Groceries
+	attr_accessor :cart, :coups, :new_cart, :extra_discount,:totalcost
 
 	ITEMS = [  {"AVOCADO" => {:price => 3.00, :clearance => true}},
 				{"KALE" => {:price => 3.00,:clearance => false}},
@@ -28,6 +28,15 @@ class GroceryShopping
 		@new_cart = reorganizeCart
 		@totaldiscount
 		@totalcost = 0.00
+		@extra_discount = -10
+	end
+
+	def run
+		# addCost
+		# addCoupstoItem
+		# coupDiscounts
+		# lessThanFive
+		# checkout
 	end
 
 	#randomly generates a cart of items
@@ -52,7 +61,6 @@ class GroceryShopping
 	def reorganizeCart
 		@new_cart = {}
 		@cart.each do |itemhash|
-
 			itemhash.each do |item, details|
 				@new_cart[item] = details
 				# adds :count key value to the hash
@@ -63,7 +71,6 @@ class GroceryShopping
 				end
 			end
 		end
-
 		#gets rid of duplicate entries
 		repeat = []
 		@new_cart.each do |item, hash|
@@ -73,6 +80,7 @@ class GroceryShopping
 		 		repeat << item
 		 	end
 		end
+		@new_cart
 	end
 
 	def addCost
@@ -90,8 +98,6 @@ class GroceryShopping
 				end
 			end
 		end
-		@new_cart
-			
 	end
 
 	# INCORPORATE: if the customer has 2 of the same coupon, triple the discount 
@@ -101,61 +107,41 @@ class GroceryShopping
 				when item == "CHEESE" && details[:coups] == 1 && details[:count] > 2
 					details[:cost] = (((details[:count] / 3) * 15) + ((details[:count] % 3) * details[:price]))
 				when item == "AVOCADO" && details[:coups] == 1 && details[:count] > 1
-						details[:cost] = (((details[:count] / 2) * 5) + ((details[:count] % 2) * details[:price]))
+					details[:cost] = (((details[:count] / 2) * 5) + ((details[:count] % 2) * details[:price]))
 				when item == "BEER" && details[:coups] == 1 && details[:count] > 1
-						details[:cost] = (((details[:count] / 2) * 20) + ((details[:count] % 2) * details[:price]))
+					details[:cost] = (((details[:count] / 2) * 20) + ((details[:count] % 2) * details[:price]))
 				end				
 		end
 	end		
 	
-	# INCORPORATE: if none of the items purchased have a unit price greater than 5$ give the customer a 10$ discount off the whole cart
+	def lessThanFive
+		@new_cart.each do |item, details|
+			@extra_discount = 0 if details[:price] > 5
+		end
+		@extra_discount
+	end
+
 	def checkout
 		@new_cart.each do |item, details|
 			if details[:clearance]==true
-				@totalcost += (details[:cost] * 0.8)
+				@totalcost += (details[:cost] * 0.8) + @extra_discount
 			else
-				@totalcost += (details[:cost])
+				@totalcost += (details[:cost]) + @extra_discount
 			end
+		end
 		@totalcost
 	end
-
 end
 
-		# adds cost for each item less the clearance discount
-		# @new_cart.each do |item, details|
-		# 	if details[:clearance]==true
-		# 		@totalcost += (details[:price] * details[:count] * 0.8)
-		# 	else
-		# 		@totalcost += (details[:price] * details[:count])
-		# 	end
-		# end
-		# adds coupon discounts
-		# @new_cart.each do |item, details|
-		# 	if item == "AVOCADO" && if details[:count] >= 2
-		# 		@totalcost -= 1 * (details[:count] / 2)
-		# 	end
-		# end
-	# end
 
+nisha = Groceries.new
+nisha.run
 
+# puts "CART: #{nisha.cart}"
+# puts "COUPS: #{nisha.coups}"
 
-nisha = GroceryShopping.new
-nisha.addCost
-nisha.addCoupstoItem
-nisha.coupDiscounts
-nisha.checkout
-puts nisha.new_cart
-
-
-# puts nisha_groceries.new_cart
-
-# somehow this gets rid of repeats automatically...
-
-
-
-
-
-
+puts "NEW CART: #{nisha.new_cart}"
+# puts nisha.totalcost
 
 
 #the cart is currently an array of individual items, translate it into a hash that includes the counts for each item
@@ -166,6 +152,3 @@ puts nisha.new_cart
 # #if any of the items are on clearance add a 20% discount
 # if the customer has 2 of the same coupon, triple the discount
 # if none of the items purchased have a unit price greater than 5$ give the customer a 10$ discount off the whole cart
-
-# #Reward
-# # https://www.youtube.com/watch?v=-RuSCACXmXs
